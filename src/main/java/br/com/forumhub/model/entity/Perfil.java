@@ -1,10 +1,8 @@
 package br.com.forumhub.model.entity;
 
+import br.com.forumhub.model.enums.RoleEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Perfil {
 
     @Column
@@ -22,7 +21,8 @@ public class Perfil {
     private Long id;
 
     @Column
-    private String nome;
+    @Enumerated(EnumType.STRING)
+    private RoleEnum nome;
 
     @ManyToMany(mappedBy = "perfis")
     private List<Usuario> usuarios;

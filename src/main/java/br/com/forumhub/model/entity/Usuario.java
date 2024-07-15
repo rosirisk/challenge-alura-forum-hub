@@ -1,20 +1,23 @@
 package br.com.forumhub.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Usuario {
+@Builder
+public class Usuario implements UserDetails {
 
     @Column
     @Id
@@ -37,4 +40,21 @@ public class Usuario {
     )
     private List<Perfil> perfis;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> roles = perfis.stream()
+                .map(p -> new SimpleGrantedAuthority(p.getNome().getRole()))
+                .collect(Collectors.toList());
+        return roles;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
 }

@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"titulo","mensagem"}))
 public class Topico {
 
     @Column
